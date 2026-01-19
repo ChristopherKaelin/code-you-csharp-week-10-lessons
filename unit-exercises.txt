@@ -1,0 +1,67 @@
+void Unit_7()
+{
+    //  Say hi
+    Console.WriteLine("\n==================================");
+    Console.WriteLine("Hello, World!. Welcome to Unit 7");
+    Console.WriteLine("==================================\n");
+
+    string currentDirectory = Directory.GetCurrentDirectory();
+    var storesDirectory = Path.Combine(currentDirectory, "stores");
+
+    var salesTotalDir = Path.Combine(currentDirectory, "salesTotalDir");
+    Directory.CreateDirectory(salesTotalDir);   // Add this line of code
+
+    var salesFiles = FindFiles(storesDirectory, "sales.json");
+
+    File.WriteAllText(Path.Combine(salesTotalDir, "totals.txt"), String.Empty);
+
+    Console.WriteLine();
+
+
+    Console.WriteLine($"\n");
+}
+
+
+void Unit_5()
+{
+    //  Say hi
+    Console.WriteLine("\n==================================");
+    Console.WriteLine("Hello, World!. Welcome to Unit 5");
+    Console.WriteLine("==================================");
+
+    //  List files in the specified directory
+    var currentDirectory = Directory.GetCurrentDirectory();
+    var storesDirectory = Path.Combine(currentDirectory, "stores");
+    var fileSearch = "sales.json";
+
+    Console.WriteLine($"\nHere are the {fileSearch} files in the {storesDirectory} directorty.");
+    var salesFilesList = FindFiles(storesDirectory, fileSearch, true);
+    foreach (var file in salesFilesList)
+    {
+        Console.WriteLine(file);
+    }
+
+    Console.WriteLine("\n");
+}
+
+
+void Unit_3()
+{
+    //  Say hi
+    Console.WriteLine("\n==================================");
+    Console.WriteLine(" Hello, World!. Welcome to Unit 3 ");
+    Console.WriteLine("==================================");
+
+    //  List files in the specified directory
+    string salesPath = Path.Combine("stores", "201");
+    var fileSearch = "sales.json";
+    Console.WriteLine($"\nHere are the {fileSearch} files in the {salesPath} directorty.");
+    var salesFilesList = FindFiles(salesPath, fileSearch);
+    foreach (var file in salesFilesList)
+    {
+        Console.WriteLine(file);
+    }
+
+}
+
+
