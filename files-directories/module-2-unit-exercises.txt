@@ -1,0 +1,221 @@
+//  Path Class
+    string directoryPath = @"C:\ExampleDirectory";
+    string fileName = "example.txt";
+
+    // Combine directory and file name to create a full path
+    string fullPath = Path.Combine(directoryPath, fileName);
+    Console.WriteLine("Full Path: " + fullPath);
+
+    // Get the file name without extension
+    string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fullPath);
+    Console.WriteLine("File Name Without Extension: " + fileNameWithoutExtension);
+
+    // Get the file extension
+    string fileExtension = Path.GetExtension(fullPath);
+    Console.WriteLine("File Extension: " + fileExtension);
+
+
+//  Directory Class
+    string directoryPath = @"C:\ExampleDirectory";
+
+    // Create a new directory
+    Directory.CreateDirectory(directoryPath);
+
+    // Check if the directory exists
+    if (Directory.Exists(directoryPath))
+    {
+        Console.WriteLine("Directory exists.");
+
+        // Enumerate files in the directory
+        foreach (string file in Directory.EnumerateFiles(directoryPath))
+        {
+            Console.WriteLine(file);
+        }
+    }
+    else
+    {
+        Console.WriteLine("Directory does not exist.");
+    }
+
+
+//  File Class
+    string filePath = @"C:\ExampleFile.txt";
+
+    // Create a new file and write text to it
+    File.WriteAllText(filePath, "Hello, World!");
+
+    // Read the text from the file
+    string text = File.ReadAllText(filePath);
+    Console.WriteLine(text);
+
+
+//  Combined
+    string directoryPath = @"C:\ExampleDirectory";
+    string fileName = "example.txt";
+    string filePath = Path.Combine(directoryPath, fileName);
+
+    // Create a new directory
+    Directory.CreateDirectory(directoryPath);
+
+    // Create a new file and write text to it
+    File.WriteAllText(filePath, "Hello, World!");
+
+    // Read the text from the file
+    string text = File.ReadAllText(filePath);
+    Console.WriteLine(text);
+
+//  StreamWriter
+    string filePath = "data.csv";
+
+    using (StreamWriter writer = new StreamWriter(filePath, false, Encoding.UTF8))
+    {
+        // Write some data
+        writer.WriteLine("Name,Age,Occupation");
+        writer.WriteLine("Elize Harmsen,30,Engineer");
+        writer.WriteLine("Peter Zammit,25,Designer");
+        writer.WriteLine("Niki Demetriou,35,Manager");
+    }
+
+    Console.WriteLine($"CSV file created at: {filePath}");
+
+
+//  StreamReader
+    string filePath = "data.csv";
+
+    using (StreamReader reader = new StreamReader(filePath, Encoding.UTF8))
+    {
+        string line;
+        while ((line = reader.ReadLine()) != null)
+        {
+            Console.WriteLine(line);
+        }
+    }
+
+
+//  CSV & OOP
+class Employee
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public string Occupation { get; set; }
+
+    public override string ToString()
+    {
+        return $"{Name},{Age},{Occupation}";
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        //  Say Hello
+        Console.WriteLine("\n===============");
+        Console.WriteLine(" Hello, World! ");
+        Console.WriteLine("===============\n");
+
+        string directoryPath = @"D:\Code-KY-Practice";
+        Directory.SetCurrentDirectory(directoryPath);
+
+        string filePath = "data_with_header.csv";
+
+        // Create a list of employees
+        List<Employee> employees = new List<Employee>
+        {
+            new Employee { Name = "Elize Harmsen", Age = 30, Occupation = "Engineer" },
+            new Employee { Name = "Peter Zammit", Age = 25, Occupation = "Designer" },
+            new Employee { Name = "Niki Demetriou", Age = 35, Occupation = "Manager" }
+        };
+
+        // Write employees to a CSV file with a header
+        using (StreamWriter writer = new StreamWriter(filePath))
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Name,Age,Occupation"); // Write the header
+
+            foreach (var employee in employees)
+            {
+                sb.AppendLine(employee.ToString()); // Write each employee as a CSV row
+            }
+
+            writer.Write(sb.ToString());
+        }
+
+        // Append additional employees to the CSV file without a header
+        List<Employee> additionalEmployees = new List<Employee>
+        {
+            new Employee { Name = "Hannah Haynes", Age = 28, Occupation = "Developer" },
+            new Employee { Name = "Conrad Nuber", Age = 32, Occupation = "Analyst" }
+        };
+
+        using (StreamWriter writer = new StreamWriter(filePath, true))
+        {
+            StringBuilder sb = new StringBuilder();
+
+            foreach (var employee in additionalEmployees)
+            {
+                sb.AppendLine(employee.ToString()); // Append each employee as a CSV row
+            }
+
+            writer.Write(sb.ToString());
+        }
+
+        // Create a list to hold employees read from the CSV file
+        List<Employee> readEmployees = new List<Employee>();
+
+        // Read the CSV file and create Employee objects
+        using (StreamReader reader = new StreamReader(filePath))
+        {
+            string headerLine = reader.ReadLine(); // Read the header line
+            Console.WriteLine($"Header: {headerLine}");
+
+
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                string[] data = line.Split(',');
+                Employee employee = new Employee
+                {
+                    Name = data[0],
+                    Age = int.Parse(data[1]),
+                    Occupation = data[2]
+                };
+                readEmployees.Add(employee);
+            }
+        }
+
+        // Display the list of employees
+        foreach (var employee in readEmployees)
+        {
+            Console.WriteLine($"Name: {employee.Name}, Age: {employee.Age}, Occupation: {employee.Occupation}");
+        }
+
+        Console.WriteLine("\n===============\n");
+    }
+
+}
+
+
+//  FileStream
+    string path = "example.txt";
+    byte[] data = System.Text.Encoding.UTF8.GetBytes("Hello, FileStream!");
+
+    // Writing to the file
+    using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write))
+    {
+        fs.Write(data, 0, data.Length);
+        fs.Flush();
+    }
+
+    // Reading from the file
+    using (FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+    {
+        byte[] buffer = new byte[data.Length];
+        fs.Seek(0, SeekOrigin.Begin);
+        int bytesRead = fs.Read(buffer, 0, buffer.Length);
+        string readData = System.Text.Encoding.UTF8.GetString(buffer, 0, bytesRead);
+        Console.WriteLine("Data read from file: " + readData);
+    }
+
+
+//  File Access Control
